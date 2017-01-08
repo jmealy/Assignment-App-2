@@ -106,7 +106,7 @@ public class MapsActivity extends FragmentActivity  implements android.location.
                 for (DataSnapshot locSnapshot: dataSnapshot.getChildren()) {
                     LocationData loc = locSnapshot.getValue(LocationData.class);
                     if (loc != null) {
-                        // App 2: Todo: Add a map marker here based on the loc downloaded
+                        // add markers for locations in the database
                         MarkerOptions mp = new MarkerOptions();
                         mp.position(new LatLng(loc.latitude, loc.longitude));
                         mp.title("old position");
@@ -125,13 +125,11 @@ public class MapsActivity extends FragmentActivity  implements android.location.
         });
 
 
-        //App 2  todo: center and zoom the map here
+        // center and zoom camera on the eng building
         CameraUpdate center= CameraUpdateFactory.newLatLng(new LatLng(53.283912, -9.063874));
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
-
-
     }
 
 
@@ -146,13 +144,8 @@ public class MapsActivity extends FragmentActivity  implements android.location.
                 new LatLng(location.getLatitude(), location.getLongitude()), 16));
 
         LocationData loc = new LocationData(location.getLatitude(), location.getLongitude());
-
+        // upload location to firebase
         mDatabase.child("locations").push().setValue(loc);
-
-
-        //App 2  todo: upload location to Firebase
-
-
     }
 
     public void onProviderDisabled(String arg0) {
